@@ -1,0 +1,633 @@
+ARM GAS  /tmp/cc6MHbNv.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 1
+   9              		.eabi_attribute 34, 1
+  10              		.eabi_attribute 18, 4
+  11              		.file	"PID_AutoTune.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.section	.text.PIDAutotuner_Init,"ax",%progbits
+  16              		.align	1
+  17              		.global	PIDAutotuner_Init
+  18              		.arch armv7-m
+  19              		.syntax unified
+  20              		.thumb
+  21              		.thumb_func
+  22              		.fpu softvfp
+  24              	PIDAutotuner_Init:
+  25              	.LVL0:
+  26              	.LFB0:
+  27              		.file 1 "Core/Src/PID_AutoTune.c"
+   1:Core/Src/PID_AutoTune.c **** #include "PID_AutoTune.h"
+   2:Core/Src/PID_AutoTune.c **** #include <math.h>
+   3:Core/Src/PID_AutoTune.c **** 
+   4:Core/Src/PID_AutoTune.c **** void PIDAutotuner_Init(PIDAutotuner* tuner, float outputStep, float noiseBand, uint32_t lookbackTim
+  28              		.loc 1 4 137 view -0
+  29              		.cfi_startproc
+  30              		@ args = 8, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+   5:Core/Src/PID_AutoTune.c ****     tuner->outputStep = outputStep;
+  33              		.loc 1 5 5 view .LVU1
+  34              		.loc 1 5 23 is_stmt 0 view .LVU2
+  35 0000 0160     		str	r1, [r0]	@ float
+   6:Core/Src/PID_AutoTune.c ****     tuner->noiseBand = noiseBand;
+  36              		.loc 1 6 5 is_stmt 1 view .LVU3
+  37              		.loc 1 6 22 is_stmt 0 view .LVU4
+  38 0002 4260     		str	r2, [r0, #4]	@ float
+   7:Core/Src/PID_AutoTune.c ****     tuner->lookbackTime = lookbackTime;
+  39              		.loc 1 7 5 is_stmt 1 view .LVU5
+  40              		.loc 1 7 25 is_stmt 0 view .LVU6
+  41 0004 8360     		str	r3, [r0, #8]
+   8:Core/Src/PID_AutoTune.c ****     tuner->controlOutput = 0;
+  42              		.loc 1 8 5 is_stmt 1 view .LVU7
+  43              		.loc 1 8 26 is_stmt 0 view .LVU8
+  44 0006 0022     		movs	r2, #0
+  45              	.LVL1:
+  46              		.loc 1 8 26 view .LVU9
+  47 0008 C260     		str	r2, [r0, #12]	@ float
+   9:Core/Src/PID_AutoTune.c ****     tuner->minOutput = minOutput;
+  48              		.loc 1 9 5 is_stmt 1 view .LVU10
+  49              		.loc 1 9 22 is_stmt 0 view .LVU11
+ARM GAS  /tmp/cc6MHbNv.s 			page 2
+
+
+  50 000a 009B     		ldr	r3, [sp]	@ float
+  51              	.LVL2:
+  52              		.loc 1 9 22 view .LVU12
+  53 000c 0361     		str	r3, [r0, #16]	@ float
+  10:Core/Src/PID_AutoTune.c ****     tuner->maxOutput = maxOutput;
+  54              		.loc 1 10 5 is_stmt 1 view .LVU13
+  55              		.loc 1 10 22 is_stmt 0 view .LVU14
+  56 000e 019B     		ldr	r3, [sp, #4]	@ float
+  57 0010 4361     		str	r3, [r0, #20]	@ float
+  11:Core/Src/PID_AutoTune.c ****     tuner->peakCount = 0;
+  58              		.loc 1 11 5 is_stmt 1 view .LVU15
+  59              		.loc 1 11 22 is_stmt 0 view .LVU16
+  60 0012 0023     		movs	r3, #0
+  61 0014 C361     		str	r3, [r0, #28]
+  12:Core/Src/PID_AutoTune.c ****     tuner->isMax = 0;
+  62              		.loc 1 12 5 is_stmt 1 view .LVU17
+  63              		.loc 1 12 18 is_stmt 0 view .LVU18
+  64 0016 80F87430 		strb	r3, [r0, #116]
+  13:Core/Src/PID_AutoTune.c ****     tuner->isMin = 0;
+  65              		.loc 1 13 5 is_stmt 1 view .LVU19
+  66              		.loc 1 13 18 is_stmt 0 view .LVU20
+  67 001a 80F87530 		strb	r3, [r0, #117]
+  14:Core/Src/PID_AutoTune.c ****     tuner->absMax = 0;
+  68              		.loc 1 14 5 is_stmt 1 view .LVU21
+  69              		.loc 1 14 19 is_stmt 0 view .LVU22
+  70 001e 8267     		str	r2, [r0, #120]	@ float
+  15:Core/Src/PID_AutoTune.c ****     tuner->absMin = 0;
+  71              		.loc 1 15 5 is_stmt 1 view .LVU23
+  72              		.loc 1 15 19 is_stmt 0 view .LVU24
+  73 0020 C267     		str	r2, [r0, #124]	@ float
+  16:Core/Src/PID_AutoTune.c ****     tuner->running = true;
+  74              		.loc 1 16 5 is_stmt 1 view .LVU25
+  75              		.loc 1 16 20 is_stmt 0 view .LVU26
+  76 0022 0122     		movs	r2, #1
+  77 0024 80F88020 		strb	r2, [r0, #128]
+  17:Core/Src/PID_AutoTune.c ****     tuner->lastTime = 0;
+  78              		.loc 1 17 5 is_stmt 1 view .LVU27
+  79              		.loc 1 17 21 is_stmt 0 view .LVU28
+  80 0028 0367     		str	r3, [r0, #112]
+  18:Core/Src/PID_AutoTune.c **** }
+  81              		.loc 1 18 1 view .LVU29
+  82 002a 7047     		bx	lr
+  83              		.cfi_endproc
+  84              	.LFE0:
+  86              		.global	__aeabi_fcmplt
+  87              		.global	__aeabi_fcmpgt
+  88              		.global	__aeabi_fadd
+  89              		.global	__aeabi_fsub
+  90              		.section	.text.PIDAutotuner_Runtime,"ax",%progbits
+  91              		.align	1
+  92              		.global	PIDAutotuner_Runtime
+  93              		.syntax unified
+  94              		.thumb
+  95              		.thumb_func
+  96              		.fpu softvfp
+  98              	PIDAutotuner_Runtime:
+  99              	.LVL3:
+ARM GAS  /tmp/cc6MHbNv.s 			page 3
+
+
+ 100              	.LFB1:
+  19:Core/Src/PID_AutoTune.c **** 
+  20:Core/Src/PID_AutoTune.c **** bool PIDAutotuner_Runtime(PIDAutotuner* tuner, float input, uint32_t now, float* output) {
+ 101              		.loc 1 20 90 is_stmt 1 view -0
+ 102              		.cfi_startproc
+ 103              		@ args = 0, pretend = 0, frame = 0
+ 104              		@ frame_needed = 0, uses_anonymous_args = 0
+ 105              		.loc 1 20 90 is_stmt 0 view .LVU31
+ 106 0000 2DE9F047 		push	{r4, r5, r6, r7, r8, r9, r10, lr}
+ 107              	.LCFI0:
+ 108              		.cfi_def_cfa_offset 32
+ 109              		.cfi_offset 4, -32
+ 110              		.cfi_offset 5, -28
+ 111              		.cfi_offset 6, -24
+ 112              		.cfi_offset 7, -20
+ 113              		.cfi_offset 8, -16
+ 114              		.cfi_offset 9, -12
+ 115              		.cfi_offset 10, -8
+ 116              		.cfi_offset 14, -4
+  21:Core/Src/PID_AutoTune.c ****     if (!tuner->running) return false;
+ 117              		.loc 1 21 5 is_stmt 1 view .LVU32
+ 118              		.loc 1 21 15 is_stmt 0 view .LVU33
+ 119 0004 90F88070 		ldrb	r7, [r0, #128]	@ zero_extendqisi2
+ 120              		.loc 1 21 8 view .LVU34
+ 121 0008 002F     		cmp	r7, #0
+ 122 000a 3ED0     		beq	.L3
+ 123 000c 0446     		mov	r4, r0
+ 124 000e 0D46     		mov	r5, r1
+ 125 0010 1646     		mov	r6, r2
+ 126 0012 9846     		mov	r8, r3
+  22:Core/Src/PID_AutoTune.c ****     if ((now - tuner->lastTime) < tuner->lookbackTime) return false;
+ 127              		.loc 1 22 5 is_stmt 1 view .LVU35
+ 128              		.loc 1 22 21 is_stmt 0 view .LVU36
+ 129 0014 026F     		ldr	r2, [r0, #112]
+ 130              	.LVL4:
+ 131              		.loc 1 22 14 view .LVU37
+ 132 0016 B21A     		subs	r2, r6, r2
+ 133              		.loc 1 22 40 view .LVU38
+ 134 0018 8368     		ldr	r3, [r0, #8]
+ 135              	.LVL5:
+ 136              		.loc 1 22 8 view .LVU39
+ 137 001a 9A42     		cmp	r2, r3
+ 138 001c 5FD3     		bcc	.L14
+  23:Core/Src/PID_AutoTune.c **** 
+  24:Core/Src/PID_AutoTune.c ****     tuner->lastTime = now;
+ 139              		.loc 1 24 5 is_stmt 1 view .LVU40
+ 140              		.loc 1 24 21 is_stmt 0 view .LVU41
+ 141 001e 0667     		str	r6, [r0, #112]
+  25:Core/Src/PID_AutoTune.c **** 
+  26:Core/Src/PID_AutoTune.c ****     if (input > tuner->absMax) tuner->absMax = input;
+ 142              		.loc 1 26 5 is_stmt 1 view .LVU42
+ 143              		.loc 1 26 8 is_stmt 0 view .LVU43
+ 144 0020 806F     		ldr	r0, [r0, #120]	@ float
+ 145              	.LVL6:
+ 146              		.loc 1 26 8 view .LVU44
+ 147 0022 FFF7FEFF 		bl	__aeabi_fcmplt
+ 148              	.LVL7:
+ARM GAS  /tmp/cc6MHbNv.s 			page 4
+
+
+ 149              		.loc 1 26 8 view .LVU45
+ 150 0026 00B1     		cbz	r0, .L4
+ 151              		.loc 1 26 32 is_stmt 1 discriminator 1 view .LVU46
+ 152              		.loc 1 26 46 is_stmt 0 discriminator 1 view .LVU47
+ 153 0028 A567     		str	r5, [r4, #120]	@ float
+ 154              	.L4:
+  27:Core/Src/PID_AutoTune.c ****     if (input < tuner->absMin) tuner->absMin = input;
+ 155              		.loc 1 27 5 is_stmt 1 view .LVU48
+ 156              		.loc 1 27 8 is_stmt 0 view .LVU49
+ 157 002a 2946     		mov	r1, r5
+ 158 002c E06F     		ldr	r0, [r4, #124]	@ float
+ 159 002e FFF7FEFF 		bl	__aeabi_fcmpgt
+ 160              	.LVL8:
+ 161 0032 00B1     		cbz	r0, .L6
+ 162              		.loc 1 27 32 is_stmt 1 discriminator 1 view .LVU50
+ 163              		.loc 1 27 46 is_stmt 0 discriminator 1 view .LVU51
+ 164 0034 E567     		str	r5, [r4, #124]	@ float
+ 165              	.L6:
+  28:Core/Src/PID_AutoTune.c **** 
+  29:Core/Src/PID_AutoTune.c ****     if (input > tuner->lastInput + tuner->noiseBand) {
+ 166              		.loc 1 29 5 is_stmt 1 view .LVU52
+ 167              		.loc 1 29 22 is_stmt 0 view .LVU53
+ 168 0036 D4F81890 		ldr	r9, [r4, #24]	@ float
+ 169              		.loc 1 29 41 view .LVU54
+ 170 003a D4F804A0 		ldr	r10, [r4, #4]	@ float
+ 171              		.loc 1 29 34 view .LVU55
+ 172 003e 5146     		mov	r1, r10
+ 173 0040 4846     		mov	r0, r9
+ 174 0042 FFF7FEFF 		bl	__aeabi_fadd
+ 175              	.LVL9:
+ 176              		.loc 1 29 8 view .LVU56
+ 177 0046 2946     		mov	r1, r5
+ 178 0048 FFF7FEFF 		bl	__aeabi_fcmplt
+ 179              	.LVL10:
+ 180 004c 00B3     		cbz	r0, .L20
+  30:Core/Src/PID_AutoTune.c ****         if (tuner->isMin) {
+ 181              		.loc 1 30 9 is_stmt 1 view .LVU57
+ 182              		.loc 1 30 18 is_stmt 0 view .LVU58
+ 183 004e 94F87530 		ldrb	r3, [r4, #117]	@ zero_extendqisi2
+ 184              		.loc 1 30 12 view .LVU59
+ 185 0052 63B1     		cbz	r3, .L10
+  31:Core/Src/PID_AutoTune.c ****             tuner->isMin = 0;
+ 186              		.loc 1 31 13 is_stmt 1 view .LVU60
+ 187              		.loc 1 31 26 is_stmt 0 view .LVU61
+ 188 0054 0023     		movs	r3, #0
+ 189 0056 84F87530 		strb	r3, [r4, #117]
+  32:Core/Src/PID_AutoTune.c ****             tuner->peaks[tuner->peakCount] = input;
+ 190              		.loc 1 32 13 is_stmt 1 view .LVU62
+ 191              		.loc 1 32 31 is_stmt 0 view .LVU63
+ 192 005a E369     		ldr	r3, [r4, #28]
+ 193              		.loc 1 32 44 view .LVU64
+ 194 005c 03F10802 		add	r2, r3, #8
+ 195 0060 44F82250 		str	r5, [r4, r2, lsl #2]	@ float
+  33:Core/Src/PID_AutoTune.c ****             tuner->peakTimes[tuner->peakCount++] = now;
+ 196              		.loc 1 33 13 is_stmt 1 view .LVU65
+ 197              		.loc 1 33 46 is_stmt 0 view .LVU66
+ 198 0064 5A1C     		adds	r2, r3, #1
+ARM GAS  /tmp/cc6MHbNv.s 			page 5
+
+
+ 199 0066 E261     		str	r2, [r4, #28]
+ 200              		.loc 1 33 50 view .LVU67
+ 201 0068 1233     		adds	r3, r3, #18
+ 202 006a 44F82360 		str	r6, [r4, r3, lsl #2]
+ 203              	.L10:
+  34:Core/Src/PID_AutoTune.c ****         }
+  35:Core/Src/PID_AutoTune.c ****         tuner->isMax = 1;
+ 204              		.loc 1 35 9 is_stmt 1 view .LVU68
+ 205              		.loc 1 35 22 is_stmt 0 view .LVU69
+ 206 006e 0123     		movs	r3, #1
+ 207 0070 84F87430 		strb	r3, [r4, #116]
+  36:Core/Src/PID_AutoTune.c ****         *output = tuner->controlOutput + tuner->outputStep;
+ 208              		.loc 1 36 9 is_stmt 1 view .LVU70
+ 209              		.loc 1 36 40 is_stmt 0 view .LVU71
+ 210 0074 2168     		ldr	r1, [r4]	@ float
+ 211 0076 E068     		ldr	r0, [r4, #12]	@ float
+ 212 0078 FFF7FEFF 		bl	__aeabi_fadd
+ 213              	.LVL11:
+ 214              		.loc 1 36 17 view .LVU72
+ 215 007c C8F80000 		str	r0, [r8]	@ float
+ 216              	.L11:
+  37:Core/Src/PID_AutoTune.c ****     } else if (input < tuner->lastInput - tuner->noiseBand) {
+  38:Core/Src/PID_AutoTune.c ****         if (tuner->isMax) {
+  39:Core/Src/PID_AutoTune.c ****             tuner->isMax = 0;
+  40:Core/Src/PID_AutoTune.c ****             tuner->peaks[tuner->peakCount] = input;
+  41:Core/Src/PID_AutoTune.c ****             tuner->peakTimes[tuner->peakCount++] = now;
+  42:Core/Src/PID_AutoTune.c ****         }
+  43:Core/Src/PID_AutoTune.c ****         tuner->isMin = 1;
+  44:Core/Src/PID_AutoTune.c ****         *output = tuner->controlOutput - tuner->outputStep;
+  45:Core/Src/PID_AutoTune.c ****     }
+  46:Core/Src/PID_AutoTune.c **** 
+  47:Core/Src/PID_AutoTune.c ****     tuner->lastInput = input;
+ 217              		.loc 1 47 5 is_stmt 1 view .LVU73
+ 218              		.loc 1 47 22 is_stmt 0 view .LVU74
+ 219 0080 A561     		str	r5, [r4, #24]	@ float
+  48:Core/Src/PID_AutoTune.c **** 
+  49:Core/Src/PID_AutoTune.c ****     if (tuner->peakCount >= 8) {
+ 220              		.loc 1 49 5 is_stmt 1 view .LVU75
+ 221              		.loc 1 49 14 is_stmt 0 view .LVU76
+ 222 0082 E369     		ldr	r3, [r4, #28]
+ 223              		.loc 1 49 8 view .LVU77
+ 224 0084 072B     		cmp	r3, #7
+ 225 0086 26D8     		bhi	.L22
+  50:Core/Src/PID_AutoTune.c ****         tuner->running = false;
+  51:Core/Src/PID_AutoTune.c ****         return true;
+  52:Core/Src/PID_AutoTune.c ****     }
+  53:Core/Src/PID_AutoTune.c ****     return false;
+ 226              		.loc 1 53 12 view .LVU78
+ 227 0088 0027     		movs	r7, #0
+ 228              	.LVL12:
+ 229              	.L3:
+  54:Core/Src/PID_AutoTune.c **** }
+ 230              		.loc 1 54 1 view .LVU79
+ 231 008a 3846     		mov	r0, r7
+ 232 008c BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+ 233              	.LVL13:
+ 234              	.L20:
+ARM GAS  /tmp/cc6MHbNv.s 			page 6
+
+
+  37:Core/Src/PID_AutoTune.c ****         if (tuner->isMax) {
+ 235              		.loc 1 37 12 is_stmt 1 view .LVU80
+  37:Core/Src/PID_AutoTune.c ****         if (tuner->isMax) {
+ 236              		.loc 1 37 41 is_stmt 0 view .LVU81
+ 237 0090 5146     		mov	r1, r10
+ 238 0092 4846     		mov	r0, r9
+ 239 0094 FFF7FEFF 		bl	__aeabi_fsub
+ 240              	.LVL14:
+  37:Core/Src/PID_AutoTune.c ****         if (tuner->isMax) {
+ 241              		.loc 1 37 15 view .LVU82
+ 242 0098 2946     		mov	r1, r5
+ 243 009a FFF7FEFF 		bl	__aeabi_fcmpgt
+ 244              	.LVL15:
+ 245 009e 0028     		cmp	r0, #0
+ 246 00a0 EED0     		beq	.L11
+  38:Core/Src/PID_AutoTune.c ****             tuner->isMax = 0;
+ 247              		.loc 1 38 9 is_stmt 1 view .LVU83
+  38:Core/Src/PID_AutoTune.c ****             tuner->isMax = 0;
+ 248              		.loc 1 38 18 is_stmt 0 view .LVU84
+ 249 00a2 94F87430 		ldrb	r3, [r4, #116]	@ zero_extendqisi2
+  38:Core/Src/PID_AutoTune.c ****             tuner->isMax = 0;
+ 250              		.loc 1 38 12 view .LVU85
+ 251 00a6 63B1     		cbz	r3, .L13
+  39:Core/Src/PID_AutoTune.c ****             tuner->peaks[tuner->peakCount] = input;
+ 252              		.loc 1 39 13 is_stmt 1 view .LVU86
+  39:Core/Src/PID_AutoTune.c ****             tuner->peaks[tuner->peakCount] = input;
+ 253              		.loc 1 39 26 is_stmt 0 view .LVU87
+ 254 00a8 0023     		movs	r3, #0
+ 255 00aa 84F87430 		strb	r3, [r4, #116]
+  40:Core/Src/PID_AutoTune.c ****             tuner->peakTimes[tuner->peakCount++] = now;
+ 256              		.loc 1 40 13 is_stmt 1 view .LVU88
+  40:Core/Src/PID_AutoTune.c ****             tuner->peakTimes[tuner->peakCount++] = now;
+ 257              		.loc 1 40 31 is_stmt 0 view .LVU89
+ 258 00ae E369     		ldr	r3, [r4, #28]
+  40:Core/Src/PID_AutoTune.c ****             tuner->peakTimes[tuner->peakCount++] = now;
+ 259              		.loc 1 40 44 view .LVU90
+ 260 00b0 03F10802 		add	r2, r3, #8
+ 261 00b4 44F82250 		str	r5, [r4, r2, lsl #2]	@ float
+  41:Core/Src/PID_AutoTune.c ****         }
+ 262              		.loc 1 41 13 is_stmt 1 view .LVU91
+  41:Core/Src/PID_AutoTune.c ****         }
+ 263              		.loc 1 41 46 is_stmt 0 view .LVU92
+ 264 00b8 5A1C     		adds	r2, r3, #1
+ 265 00ba E261     		str	r2, [r4, #28]
+  41:Core/Src/PID_AutoTune.c ****         }
+ 266              		.loc 1 41 50 view .LVU93
+ 267 00bc 1233     		adds	r3, r3, #18
+ 268 00be 44F82360 		str	r6, [r4, r3, lsl #2]
+ 269              	.L13:
+  43:Core/Src/PID_AutoTune.c ****         *output = tuner->controlOutput - tuner->outputStep;
+ 270              		.loc 1 43 9 is_stmt 1 view .LVU94
+  43:Core/Src/PID_AutoTune.c ****         *output = tuner->controlOutput - tuner->outputStep;
+ 271              		.loc 1 43 22 is_stmt 0 view .LVU95
+ 272 00c2 0123     		movs	r3, #1
+ 273 00c4 84F87530 		strb	r3, [r4, #117]
+  44:Core/Src/PID_AutoTune.c ****     }
+ 274              		.loc 1 44 9 is_stmt 1 view .LVU96
+ARM GAS  /tmp/cc6MHbNv.s 			page 7
+
+
+  44:Core/Src/PID_AutoTune.c ****     }
+ 275              		.loc 1 44 40 is_stmt 0 view .LVU97
+ 276 00c8 2168     		ldr	r1, [r4]	@ float
+ 277 00ca E068     		ldr	r0, [r4, #12]	@ float
+ 278 00cc FFF7FEFF 		bl	__aeabi_fsub
+ 279              	.LVL16:
+  44:Core/Src/PID_AutoTune.c ****     }
+ 280              		.loc 1 44 17 view .LVU98
+ 281 00d0 C8F80000 		str	r0, [r8]	@ float
+ 282 00d4 D4E7     		b	.L11
+ 283              	.L22:
+  50:Core/Src/PID_AutoTune.c ****         return true;
+ 284              		.loc 1 50 9 is_stmt 1 view .LVU99
+  50:Core/Src/PID_AutoTune.c ****         return true;
+ 285              		.loc 1 50 24 is_stmt 0 view .LVU100
+ 286 00d6 0023     		movs	r3, #0
+ 287 00d8 84F88030 		strb	r3, [r4, #128]
+  51:Core/Src/PID_AutoTune.c ****     }
+ 288              		.loc 1 51 9 is_stmt 1 view .LVU101
+  51:Core/Src/PID_AutoTune.c ****     }
+ 289              		.loc 1 51 16 is_stmt 0 view .LVU102
+ 290 00dc D5E7     		b	.L3
+ 291              	.LVL17:
+ 292              	.L14:
+  22:Core/Src/PID_AutoTune.c **** 
+ 293              		.loc 1 22 63 view .LVU103
+ 294 00de 0027     		movs	r7, #0
+ 295 00e0 D3E7     		b	.L3
+ 296              		.cfi_endproc
+ 297              	.LFE1:
+ 299              		.global	__aeabi_ui2f
+ 300              		.global	__aeabi_fdiv
+ 301              		.global	__aeabi_fmul
+ 302              		.section	.text.PIDAutotuner_ComputeParameters,"ax",%progbits
+ 303              		.align	1
+ 304              		.global	PIDAutotuner_ComputeParameters
+ 305              		.syntax unified
+ 306              		.thumb
+ 307              		.thumb_func
+ 308              		.fpu softvfp
+ 310              	PIDAutotuner_ComputeParameters:
+ 311              	.LVL18:
+ 312              	.LFB2:
+  55:Core/Src/PID_AutoTune.c **** 
+  56:Core/Src/PID_AutoTune.c **** void PIDAutotuner_ComputeParameters(PIDAutotuner* tuner, float* Kp, float* Ki, float* Kd) {
+ 313              		.loc 1 56 91 is_stmt 1 view -0
+ 314              		.cfi_startproc
+ 315              		@ args = 0, pretend = 0, frame = 0
+ 316              		@ frame_needed = 0, uses_anonymous_args = 0
+ 317              		.loc 1 56 91 is_stmt 0 view .LVU105
+ 318 0000 2DE9F84F 		push	{r3, r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 319              	.LCFI1:
+ 320              		.cfi_def_cfa_offset 40
+ 321              		.cfi_offset 3, -40
+ 322              		.cfi_offset 4, -36
+ 323              		.cfi_offset 5, -32
+ 324              		.cfi_offset 6, -28
+ARM GAS  /tmp/cc6MHbNv.s 			page 8
+
+
+ 325              		.cfi_offset 7, -24
+ 326              		.cfi_offset 8, -20
+ 327              		.cfi_offset 9, -16
+ 328              		.cfi_offset 10, -12
+ 329              		.cfi_offset 11, -8
+ 330              		.cfi_offset 14, -4
+ 331 0004 0546     		mov	r5, r0
+ 332 0006 8946     		mov	r9, r1
+ 333 0008 9046     		mov	r8, r2
+ 334 000a 9B46     		mov	fp, r3
+  57:Core/Src/PID_AutoTune.c ****     float avgAmp = 0;
+ 335              		.loc 1 57 5 is_stmt 1 view .LVU106
+ 336              	.LVL19:
+  58:Core/Src/PID_AutoTune.c ****     for (uint8_t i = 1; i < tuner->peakCount; i++) {
+ 337              		.loc 1 58 5 view .LVU107
+ 338              	.LBB2:
+ 339              		.loc 1 58 10 view .LVU108
+ 340              		.loc 1 58 18 is_stmt 0 view .LVU109
+ 341 000c 0124     		movs	r4, #1
+ 342              	.LBE2:
+  57:Core/Src/PID_AutoTune.c ****     float avgAmp = 0;
+ 343              		.loc 1 57 11 view .LVU110
+ 344 000e 0026     		movs	r6, #0
+ 345              	.LBB3:
+ 346              		.loc 1 58 5 view .LVU111
+ 347 0010 10E0     		b	.L24
+ 348              	.LVL20:
+ 349              	.L25:
+  59:Core/Src/PID_AutoTune.c ****         avgAmp += fabsf(tuner->peaks[i] - tuner->peaks[i - 1]);
+ 350              		.loc 1 59 9 is_stmt 1 discriminator 3 view .LVU112
+ 351              		.loc 1 59 37 is_stmt 0 discriminator 3 view .LVU113
+ 352 0012 04F10803 		add	r3, r4, #8
+ 353              		.loc 1 59 55 discriminator 3 view .LVU114
+ 354 0016 E21D     		adds	r2, r4, #7
+ 355              		.loc 1 59 41 discriminator 3 view .LVU115
+ 356 0018 55F82210 		ldr	r1, [r5, r2, lsl #2]	@ float
+ 357 001c 55F82300 		ldr	r0, [r5, r3, lsl #2]	@ float
+ 358 0020 FFF7FEFF 		bl	__aeabi_fsub
+ 359              	.LVL21:
+ 360              		.loc 1 59 19 discriminator 3 view .LVU116
+ 361 0024 20F00041 		bic	r1, r0, #-2147483648
+ 362              		.loc 1 59 16 discriminator 3 view .LVU117
+ 363 0028 3046     		mov	r0, r6
+ 364 002a FFF7FEFF 		bl	__aeabi_fadd
+ 365              	.LVL22:
+ 366 002e 0646     		mov	r6, r0
+ 367              	.LVL23:
+  58:Core/Src/PID_AutoTune.c ****     for (uint8_t i = 1; i < tuner->peakCount; i++) {
+ 368              		.loc 1 58 47 is_stmt 1 discriminator 3 view .LVU118
+  58:Core/Src/PID_AutoTune.c ****     for (uint8_t i = 1; i < tuner->peakCount; i++) {
+ 369              		.loc 1 58 48 is_stmt 0 discriminator 3 view .LVU119
+ 370 0030 0134     		adds	r4, r4, #1
+ 371              	.LVL24:
+  58:Core/Src/PID_AutoTune.c ****     for (uint8_t i = 1; i < tuner->peakCount; i++) {
+ 372              		.loc 1 58 48 discriminator 3 view .LVU120
+ 373 0032 E4B2     		uxtb	r4, r4
+ 374              	.LVL25:
+ARM GAS  /tmp/cc6MHbNv.s 			page 9
+
+
+ 375              	.L24:
+  58:Core/Src/PID_AutoTune.c ****     for (uint8_t i = 1; i < tuner->peakCount; i++) {
+ 376              		.loc 1 58 25 is_stmt 1 discriminator 1 view .LVU121
+  58:Core/Src/PID_AutoTune.c ****     for (uint8_t i = 1; i < tuner->peakCount; i++) {
+ 377              		.loc 1 58 34 is_stmt 0 discriminator 1 view .LVU122
+ 378 0034 EF69     		ldr	r7, [r5, #28]
+  58:Core/Src/PID_AutoTune.c ****     for (uint8_t i = 1; i < tuner->peakCount; i++) {
+ 379              		.loc 1 58 5 discriminator 1 view .LVU123
+ 380 0036 BC42     		cmp	r4, r7
+ 381 0038 EBD3     		bcc	.L25
+ 382              	.LBE3:
+  60:Core/Src/PID_AutoTune.c ****     }
+  61:Core/Src/PID_AutoTune.c ****     avgAmp /= (tuner->peakCount - 1);
+ 383              		.loc 1 61 5 is_stmt 1 view .LVU124
+ 384              		.loc 1 61 12 is_stmt 0 view .LVU125
+ 385 003a 781E     		subs	r0, r7, #1
+ 386 003c FFF7FEFF 		bl	__aeabi_ui2f
+ 387              	.LVL26:
+ 388 0040 0146     		mov	r1, r0
+ 389 0042 3046     		mov	r0, r6
+ 390 0044 FFF7FEFF 		bl	__aeabi_fdiv
+ 391              	.LVL27:
+ 392 0048 0646     		mov	r6, r0
+ 393              	.LVL28:
+  62:Core/Src/PID_AutoTune.c ****     float Pu = (tuner->peakTimes[tuner->peakCount - 1] - tuner->peakTimes[tuner->peakCount - 5]) / 
+ 394              		.loc 1 62 5 is_stmt 1 view .LVU126
+ 395              		.loc 1 62 33 is_stmt 0 view .LVU127
+ 396 004a 07F11103 		add	r3, r7, #17
+ 397 004e 55F82300 		ldr	r0, [r5, r3, lsl #2]
+ 398              	.LVL29:
+ 399              		.loc 1 62 74 view .LVU128
+ 400 0052 07F10D0A 		add	r10, r7, #13
+ 401 0056 55F82A30 		ldr	r3, [r5, r10, lsl #2]
+ 402              		.loc 1 62 98 view .LVU129
+ 403 005a C01A     		subs	r0, r0, r3
+ 404 005c FFF7FEFF 		bl	__aeabi_ui2f
+ 405              	.LVL30:
+ 406              		.loc 1 62 11 view .LVU130
+ 407 0060 4FF07A51 		mov	r1, #1048576000
+ 408 0064 FFF7FEFF 		bl	__aeabi_fmul
+ 409              	.LVL31:
+ 410 0068 0446     		mov	r4, r0
+ 411              	.LVL32:
+  63:Core/Src/PID_AutoTune.c **** 
+  64:Core/Src/PID_AutoTune.c ****     tuner->Ku = (4.0f * tuner->outputStep) / (3.14159f * avgAmp);
+ 412              		.loc 1 64 5 is_stmt 1 view .LVU131
+ 413              		.loc 1 64 23 is_stmt 0 view .LVU132
+ 414 006a 4FF08141 		mov	r1, #1082130432
+ 415 006e 2868     		ldr	r0, [r5]	@ float
+ 416              	.LVL33:
+ 417              		.loc 1 64 23 view .LVU133
+ 418 0070 FFF7FEFF 		bl	__aeabi_fmul
+ 419              	.LVL34:
+ 420 0074 8246     		mov	r10, r0
+ 421              		.loc 1 64 56 view .LVU134
+ 422 0076 1349     		ldr	r1, .L27
+ 423 0078 3046     		mov	r0, r6
+ARM GAS  /tmp/cc6MHbNv.s 			page 10
+
+
+ 424 007a FFF7FEFF 		bl	__aeabi_fmul
+ 425              	.LVL35:
+ 426 007e 0146     		mov	r1, r0
+ 427              		.loc 1 64 44 view .LVU135
+ 428 0080 5046     		mov	r0, r10
+ 429 0082 FFF7FEFF 		bl	__aeabi_fdiv
+ 430              	.LVL36:
+ 431              		.loc 1 64 15 view .LVU136
+ 432 0086 C5F88400 		str	r0, [r5, #132]	@ float
+  65:Core/Src/PID_AutoTune.c ****     tuner->Pu = Pu;
+ 433              		.loc 1 65 5 is_stmt 1 view .LVU137
+ 434              		.loc 1 65 15 is_stmt 0 view .LVU138
+ 435 008a C5F88840 		str	r4, [r5, #136]	@ float
+  66:Core/Src/PID_AutoTune.c **** 
+  67:Core/Src/PID_AutoTune.c ****     *Kp = 0.6f * tuner->Ku;
+ 436              		.loc 1 67 5 is_stmt 1 view .LVU139
+ 437              		.loc 1 67 16 is_stmt 0 view .LVU140
+ 438 008e 0E49     		ldr	r1, .L27+4
+ 439 0090 FFF7FEFF 		bl	__aeabi_fmul
+ 440              	.LVL37:
+ 441              		.loc 1 67 9 view .LVU141
+ 442 0094 C9F80000 		str	r0, [r9]	@ float
+  68:Core/Src/PID_AutoTune.c ****     *Ki = 1.2f * tuner->Ku / Pu;
+ 443              		.loc 1 68 5 is_stmt 1 view .LVU142
+ 444              		.loc 1 68 16 is_stmt 0 view .LVU143
+ 445 0098 0C49     		ldr	r1, .L27+8
+ 446 009a D5F88400 		ldr	r0, [r5, #132]	@ float
+ 447 009e FFF7FEFF 		bl	__aeabi_fmul
+ 448              	.LVL38:
+ 449              		.loc 1 68 28 view .LVU144
+ 450 00a2 2146     		mov	r1, r4
+ 451 00a4 FFF7FEFF 		bl	__aeabi_fdiv
+ 452              	.LVL39:
+ 453              		.loc 1 68 9 view .LVU145
+ 454 00a8 C8F80000 		str	r0, [r8]	@ float
+  69:Core/Src/PID_AutoTune.c ****     *Kd = 0.075f * tuner->Ku * Pu;
+ 455              		.loc 1 69 5 is_stmt 1 view .LVU146
+ 456              		.loc 1 69 18 is_stmt 0 view .LVU147
+ 457 00ac 0849     		ldr	r1, .L27+12
+ 458 00ae D5F88400 		ldr	r0, [r5, #132]	@ float
+ 459 00b2 FFF7FEFF 		bl	__aeabi_fmul
+ 460              	.LVL40:
+ 461              		.loc 1 69 30 view .LVU148
+ 462 00b6 2146     		mov	r1, r4
+ 463 00b8 FFF7FEFF 		bl	__aeabi_fmul
+ 464              	.LVL41:
+ 465              		.loc 1 69 9 view .LVU149
+ 466 00bc CBF80000 		str	r0, [fp]	@ float
+  70:Core/Src/PID_AutoTune.c **** }
+ 467              		.loc 1 70 1 view .LVU150
+ 468 00c0 BDE8F88F 		pop	{r3, r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 469              	.LVL42:
+ 470              	.L28:
+ 471              		.loc 1 70 1 view .LVU151
+ 472              		.align	2
+ 473              	.L27:
+ 474 00c4 D00F4940 		.word	1078530000
+ARM GAS  /tmp/cc6MHbNv.s 			page 11
+
+
+ 475 00c8 9A99193F 		.word	1058642330
+ 476 00cc 9A99993F 		.word	1067030938
+ 477 00d0 9A99993D 		.word	1033476506
+ 478              		.cfi_endproc
+ 479              	.LFE2:
+ 481              		.text
+ 482              	.Letext0:
+ 483              		.file 2 "/usr/lib/gcc/arm-none-eabi/10.3.1/include/stdint.h"
+ 484              		.file 3 "Core/Inc/PID_AutoTune.h"
+ARM GAS  /tmp/cc6MHbNv.s 			page 12
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 PID_AutoTune.c
+     /tmp/cc6MHbNv.s:16     .text.PIDAutotuner_Init:0000000000000000 $t
+     /tmp/cc6MHbNv.s:24     .text.PIDAutotuner_Init:0000000000000000 PIDAutotuner_Init
+     /tmp/cc6MHbNv.s:91     .text.PIDAutotuner_Runtime:0000000000000000 $t
+     /tmp/cc6MHbNv.s:98     .text.PIDAutotuner_Runtime:0000000000000000 PIDAutotuner_Runtime
+     /tmp/cc6MHbNv.s:303    .text.PIDAutotuner_ComputeParameters:0000000000000000 $t
+     /tmp/cc6MHbNv.s:310    .text.PIDAutotuner_ComputeParameters:0000000000000000 PIDAutotuner_ComputeParameters
+     /tmp/cc6MHbNv.s:474    .text.PIDAutotuner_ComputeParameters:00000000000000c4 $d
+
+UNDEFINED SYMBOLS
+__aeabi_fcmplt
+__aeabi_fcmpgt
+__aeabi_fadd
+__aeabi_fsub
+__aeabi_ui2f
+__aeabi_fdiv
+__aeabi_fmul
